@@ -1,0 +1,9 @@
+name: BuildFFA
+version: 1.0
+author: IchWurdeGeboren
+main: de.mystarybreak.buildffa.BuildFFA
+
+commands:
+  map:
+  worldmanager:
+    aliases: wm
