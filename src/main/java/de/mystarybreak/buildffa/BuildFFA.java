@@ -1,27 +1,25 @@
 package de.mystarybreak.buildffa;
 
 import de.mystarybreak.buildffa.commands.MapCommand;
-import de.mystarybreak.buildffa.commands.WorldManagerCommand;
+import de.mystarybreak.buildffa.commands.StatsCommand;
 import de.mystarybreak.buildffa.listener.*;
 import de.mystarybreak.buildffa.utils.*;
 import de.mystarybreak.buildffa.utils.kits.KitManager;
-import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BuildFFA extends JavaPlugin {
 
-    @Getter private Data data;
-    @Getter private StatsManager statsManager;
-    @Getter private MapManager mapManager;
-    @Getter private ScoreboardManager scoreboardManager;
-    @Getter private ConfigUtils configUtils;
-    @Getter private KitManager kitManager;
-    @Getter private ActionbarManager actionbarManager;
+    private Data data;
+    private StatsManager statsManager;
+    private MapManager mapManager;
+    private ScoreboardManager scoreboardManager;
+    private KitManager kitManager;
+    private ActionbarManager actionbarManager;
 
     @Override
     public void onEnable() {
         data = new Data(this);
-        configUtils = new ConfigUtils();
         statsManager = new StatsManager(this);
         mapManager = new MapManager(this);
         kitManager = new KitManager(this);
@@ -29,6 +27,12 @@ public class BuildFFA extends JavaPlugin {
         actionbarManager = new ActionbarManager(this);
         initListeners();
         initCommands();
+        Bukkit.getConsoleSender().sendMessage("Das Plugin startet");
+    }
+
+    @Override
+    public void onDisable() {
+        getData().getStats().close();
     }
 
     private void initListeners() {
@@ -41,6 +45,26 @@ public class BuildFFA extends JavaPlugin {
 
     private void initCommands() {
         new MapCommand(this);
-        new WorldManagerCommand(this);
+        new StatsCommand(this);
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public StatsManager getStatsManager() {
+        return statsManager;
+    }
+
+    public KitManager getKitManager() {
+        return kitManager;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
     }
 }

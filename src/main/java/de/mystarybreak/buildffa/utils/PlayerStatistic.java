@@ -1,12 +1,10 @@
 package de.mystarybreak.buildffa.utils;
 
-import lombok.Getter;
-
 public class PlayerStatistic {
 
-    @Getter private int kills;
-    @Getter private int deaths;
-    @Getter private int points;
+    private int kills;
+    private int deaths;
+    private int points;
 
     public PlayerStatistic(int kills, int deaths, int points) {
         this.kills = kills;
@@ -33,4 +31,15 @@ public class PlayerStatistic {
             this.points = 0;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
 }

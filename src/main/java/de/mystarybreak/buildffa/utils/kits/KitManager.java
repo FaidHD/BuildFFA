@@ -1,7 +1,6 @@
 package de.mystarybreak.buildffa.utils.kits;
 
 import de.mystarybreak.buildffa.BuildFFA;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,15 +11,13 @@ public class KitManager {
 
     private BuildFFA plugin;
 
-    @Getter
     private Kit currentKit;
 
     private ArrayList<Kit> kitPool;
 
-    @Getter
     private int seconds = 0;
-    @Getter
     private int minutes = 3;
+    private int taskID;
 
     public KitManager(BuildFFA plugin) {
         this.plugin = plugin;
@@ -28,12 +25,16 @@ public class KitManager {
         kitPool.add(new AnglerKit(plugin));
         kitPool.add(new KnockbackKit(plugin));
         kitPool.add(new EndermanKit(plugin));
-        if (!plugin.getMapManager().getMapPool().isEmpty())
-            startKitChange();
+        startKitChange();
     }
 
-    private void startKitChange() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    public void startKitChange() {
+        if (plugin.getMapManager().getMapPool().isEmpty()) return;
+        Bukkit.getScheduler().cancelTask(taskID);
+        changeKit();
+        seconds = 0;
+        minutes = 3;
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 if (seconds == 0) {
@@ -60,8 +61,25 @@ public class KitManager {
 
         currentKit = newKit;
 
-        for(Player a : Bukkit.getOnlinePlayers())
-            a.getInventory().setContents(currentKit.getInventory().getContents());
+        for (Player a : Bukkit.getOnlinePlayers()) {
+            a.getInventory().setContents(currentKit.getContents());
+            a.getInventory().setArmorContents(currentKit.getArmorContents());
+        }
     }
 
+    public ArrayList<Kit> getKitPool() {
+        return kitPool;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public Kit getCurrentKit() {
+        return currentKit;
+    }
 }

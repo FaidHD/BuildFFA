@@ -6,9 +6,9 @@ import org.bukkit.Location;
 public class LocationManager {
 
     public Location getLocationInMiddle(Location location) {
-        double x = location.getX() < 0 ? location.getX() - 0.5 : location.getX() + 0.5;
-        double z = location.getZ() < 0 ? location.getZ() - 0.5 : location.getZ() + 0.5;
-        return new Location(location.getWorld(), x, location.getY(), z, location.getYaw(), location.getPitch());
+        double x = location.getBlockX() < 0 ? location.getBlockX() - 0.5 : location.getBlockX() + 0.5;
+        double z = location.getBlockZ() < 0 ? location.getBlockZ() - 0.5 : location.getBlockZ() + 0.5;
+        return new Location(location.getWorld(), x < 0 ? x + 1 : x, location.getY(), z < 0 ? z + 1 : z, location.getYaw(), location.getPitch());
     }
 
     public String getLocAsString(Location loc) {

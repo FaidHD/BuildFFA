@@ -68,8 +68,8 @@ public class MapCommand implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("setpvp")) {
                     if (maps.containsKey(player)) {
                         maps.get(player).setPvpHeight(player.getLocation().getBlockY());
-                        player.sendMessage(plugin.getData().getPrefix() + "Du hast erfolgreich die Todeshöhe gesetzt.");
-                        player.sendMessage(plugin.getData().getPrefix() + "Setze nun die PvP-Höhe mit §a/map setpvp");
+                        player.sendMessage(plugin.getData().getPrefix() + "Du hast erfolgreich die PvP-Höhe gesetzt.");
+                        player.sendMessage(plugin.getData().getPrefix() + "Speichere nun die Map mit §a/map save");
                     } else
                         player.sendMessage(plugin.getData().getPrefix() + "Bitte erstelle erst eine Map mit §a/map create <Name>");
                 } else if (args[0].equalsIgnoreCase("save")) {
@@ -85,13 +85,13 @@ public class MapCommand implements CommandExecutor {
                     player.sendMessage(plugin.getData().getPrefix() + "§8§l---------- §7« §aBuildFFA§7 » §8§l----------");
                 } else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
                     plugin.getMapManager().loadMaps();
+                    plugin.getKitManager().startKitChange();
                     player.sendMessage(plugin.getData().getPrefix() + "Du hast die Maps erfolgreich neu geladen.");
                     player.sendMessage(plugin.getData().getPrefix() + "Es wurden §a" + plugin.getMapManager().getMapPool().size() + " §7Maps geladen.");
                 } else
                     sendHelp(player);
             } else
                 sendHelp(player);
-
         } else
             player.sendMessage(plugin.getData().getNoperm());
         return false;
@@ -103,7 +103,6 @@ public class MapCommand implements CommandExecutor {
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map setSpawn §8» §7Setze den Spawn");
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map setDeath §8» §7Setze die Todeshöhe");
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map setPvP §8» §7Setze die PvP-Höhe");
-        p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map setBuilder §8» §7Setze den Builder der Map");
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map save §8» §7Speichere die Map");
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map list §8» §7Zeige alle aktiven Maps");
         p.sendMessage(plugin.getData().getPrefix() + "§8- §a/map reload §8» §7Lade alle Maps aus der Config neu.");

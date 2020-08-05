@@ -30,7 +30,7 @@ public class ScoreboardManager {
         ScoreboardScore a6 = new ScoreboardScore(sb, obj, "§8§7§5§6");
         ScoreboardScore a7 = new ScoreboardScore(sb, obj, "§8» §7Kit");
         ScoreboardScore a8 = new ScoreboardScore(sb, obj, "§1§6§7•● §a" + plugin.getKitManager().getCurrentKit().getScoreboardName());
-        ScoreboardScore a9 = new ScoreboardScore(sb, obj, "§8§7§5§6");
+        ScoreboardScore a9 = new ScoreboardScore(sb, obj, "§8§7§6");
         ScoreboardScore a10 = new ScoreboardScore(sb, obj, "§8» §7K/D");
         ScoreboardScore a11 = new ScoreboardScore(sb, obj, "§5§3§7•● §a" + plugin.getStatsManager().getKD(player));
 
@@ -57,9 +57,9 @@ public class ScoreboardManager {
         PacketPlayOutScoreboardScore pa6 = new PacketPlayOutScoreboardScore(a6);
         PacketPlayOutScoreboardScore pa7 = new PacketPlayOutScoreboardScore(a7);
         PacketPlayOutScoreboardScore pa8 = new PacketPlayOutScoreboardScore(a8);
-        PacketPlayOutScoreboardScore pa9 = new PacketPlayOutScoreboardScore(a6);
-        PacketPlayOutScoreboardScore pa10 = new PacketPlayOutScoreboardScore(a7);
-        PacketPlayOutScoreboardScore pa11 = new PacketPlayOutScoreboardScore(a8);
+        PacketPlayOutScoreboardScore pa9 = new PacketPlayOutScoreboardScore(a9);
+        PacketPlayOutScoreboardScore pa10 = new PacketPlayOutScoreboardScore(a10);
+        PacketPlayOutScoreboardScore pa11 = new PacketPlayOutScoreboardScore(a11);
 
         sendPacket(player, removePacket);
         sendPacket(player, createPacket);

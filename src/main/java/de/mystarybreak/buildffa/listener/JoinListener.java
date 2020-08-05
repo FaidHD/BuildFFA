@@ -2,10 +2,12 @@ package de.mystarybreak.buildffa.listener;
 
 import de.mystarybreak.buildffa.BuildFFA;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class JoinListener implements Listener {
 
@@ -18,14 +20,26 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        e.setJoinMessage(null);
         Player player = e.getPlayer();
+        player.setLevel(0);
+        player.setExp(0);
+        player.setGameMode(GameMode.SURVIVAL);
         plugin.getStatsManager().loadPlayer(player);
+        player.getInventory().clear();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player a : Bukkit.getOnlinePlayers())
+                    plugin.getScoreboardManager().setBoard(a);
+            }
+        }.runTaskLater(plugin, 2);
         if (plugin.getMapManager().getCurrentMap() != null)
             player.teleport(plugin.getMapManager().getCurrentMap().getSpawnPoint());
-        for (Player a : Bukkit.getOnlinePlayers())
-            plugin.getScoreboardManager().setBoard(a);
-        if (!plugin.getMapManager().getMapPool().isEmpty())
-            player.getInventory().setContents(plugin.getKitManager().getCurrentKit().getInventory().getContents());
+        if (!plugin.getMapManager().getMapPool().isEmpty()) {
+            player.getInventory().setContents(plugin.getKitManager().getCurrentKit().getContents());
+            player.getInventory().setArmorContents(plugin.getKitManager().getCurrentKit().getArmorContents());
+        }
     }
 
 }

@@ -1,7 +1,6 @@
 package de.mystarybreak.buildffa.utils;
 
 import de.mystarybreak.buildffa.BuildFFA;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -19,27 +18,25 @@ public class MapManager {
 
     private BuildFFA plugin;
 
-    @Getter private ArrayList<Map> mapPool;
+    private ArrayList<Map> mapPool;
 
     private File file;
     private FileConfiguration cfg;
 
     private int taskID;
-    @Getter private int minutes = 5;
-    @Getter private int seconds = 0;
+    private int minutes = 5;
+    private int seconds = 0;
 
-    @Getter
+
     private Map currentMap;
 
     public MapManager(BuildFFA plugin) {
         this.plugin = plugin;
         this.mapPool = new ArrayList<>();
         loadMaps();
-        startMapChange();
     }
 
     public void addMap(Map map) {
-        cfg.set(map.getName() + ".Builder", map.getBuilder());
         cfg.set(map.getName() + ".SpawnPoint", new LocationManager().getLocAsString(map.getSpawnPoint()));
         cfg.set(map.getName() + ".DeathHeight", map.getDeathHeight());
         cfg.set(map.getName() + ".PvPHeight", map.getPvpHeight());
@@ -68,6 +65,7 @@ public class MapManager {
         for (String s : cfg.getKeys(false)) {
             mapPool.add(new Map(s, cfg.getString(s + ".Builder"), new LocationManager().getStringAsLoc(cfg.getString(s + ".SpawnPoint")), cfg.getInt(s + ".DeathHeight"), cfg.getInt(s + ".PvPHeight"), plugin));
         }
+        startMapChange();
     }
 
     private void startMapChange() {
@@ -79,19 +77,23 @@ public class MapManager {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for(Player a : Bukkit.getOnlinePlayers()) {
+                    for (Player a : Bukkit.getOnlinePlayers()) {
                         a.teleport(currentMap.getSpawnPoint());
                     }
                 }
             }.runTaskLater(plugin, 2);
         } else {
+            seconds = 0;
+            minutes = 5;
             Random r = new Random();
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for(Player a : Bukkit.getOnlinePlayers()) {
-                        a.teleport(currentMap.getSpawnPoint());
-                    }
+                    if (Bukkit.getOnlinePlayers().size() > 0)
+                        for (Player a : Bukkit.getOnlinePlayers()) {
+                            plugin.getScoreboardManager().setBoard(a);
+                            a.teleport(currentMap.getSpawnPoint());
+                        }
                 }
             }.runTaskLater(plugin, 2);
             currentMap = mapPool.get(r.nextInt(mapPool.size() - 1));
@@ -180,4 +182,19 @@ public class MapManager {
         return false;
     }
 
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public ArrayList<Map> getMapPool() {
+        return mapPool;
+    }
+
+    public Map getCurrentMap() {
+        return currentMap;
+    }
 }

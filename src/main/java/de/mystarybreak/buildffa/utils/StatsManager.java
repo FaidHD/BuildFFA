@@ -95,4 +95,30 @@ public class StatsManager {
         return kd / 100;
     }
 
+    public String[] getOfflineStats(String playerName) {
+        ResultSet rs = stats.query("SELECT * FROM stats WHERE PLAYERNAME='" + playerName + "'");
+        try {
+            if(!rs.next()) return null;
+            int deaths = rs.getInt("DEATHS");
+            int kills = rs.getInt("KILLS");
+            int points = rs.getInt("POINTS");
+
+            String[] pStats = new String[4];
+            pStats[0] = "" + points;
+            pStats[1] = "" + kills;
+            pStats[2] = "" + deaths;
+            if (deaths == 0) {
+                pStats[3] = kills + ".0";
+            }else {
+                double d = (kills * 100) / deaths;
+                double kd = Math.round(d);
+                pStats[3] = "" + (kd / 100);
+            }
+            return pStats;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
 }

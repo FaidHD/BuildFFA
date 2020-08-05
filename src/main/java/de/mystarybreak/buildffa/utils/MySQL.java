@@ -1,8 +1,8 @@
 package de.mystarybreak.buildffa.utils;
 
 import de.mystarybreak.buildffa.BuildFFA;
-import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 
@@ -16,7 +16,7 @@ public class MySQL {
     private String USER;
     private String PASSWORD;
 
-    @Getter private Connection con;
+    private Connection con;
 
     public MySQL(String host, String port, String database, String user, String password, BuildFFA plugin) {
         this.HOST = host;
@@ -33,9 +33,9 @@ public class MySQL {
     private void connect() {
         try {
             this.con = DriverManager.getConnection("jdbc:mysql://" + this.HOST + ":3306/" + this.DATABASE + "?autoReconnect=true", this.USER, this.PASSWORD);
-            Bukkit.getConsoleSender().sendMessage(plugin.getData().getPrefix() + "Die Verbindung zur MySQL wurde hergestellt!");
+            Bukkit.getConsoleSender().sendMessage("Die Verbindung zur MySQL wurde hergestellt!");
         } catch (SQLException e) {
-            Bukkit.getConsoleSender().sendMessage(plugin.getData().getPrefix() + "Die Verbindung zur MySQL ist fehlgeschlagen! Fehler: " + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("Die Verbindung zur MySQL ist fehlgeschlagen! Fehler: " + e.getMessage());
         }
     }
 
@@ -69,5 +69,9 @@ public class MySQL {
             System.err.println(e);
         }
         return rs;
+    }
+
+    public Connection getCon() {
+        return con;
     }
 }

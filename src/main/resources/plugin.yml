@@ -5,5 +5,4 @@ main: de.mystarybreak.buildffa.BuildFFA
 
 commands:
   map:
-  worldmanager:
-    aliases: wm
+  stats:
