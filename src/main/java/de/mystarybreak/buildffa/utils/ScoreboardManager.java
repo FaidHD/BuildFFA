@@ -5,6 +5,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ScoreboardManager {
 
@@ -14,7 +15,27 @@ public class ScoreboardManager {
         this.plugin = plugin;
     }
 
-    public void setBoard(Player player) {
+    public void updateScoreboardForAll() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (Bukkit.getOnlinePlayers().size() > 0)
+                    for (Player a : Bukkit.getOnlinePlayers())
+                        plugin.getScoreboardManager().setBoard(a);
+            }
+        }.runTaskLater(plugin, 2);
+    }
+
+    public void updateScoreboard(Player player) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                plugin.getScoreboardManager().setBoard(player);
+            }
+        }.runTaskLater(plugin, 2);
+    }
+
+    private void setBoard(Player player) {
         Scoreboard sb = new Scoreboard();
         ScoreboardObjective obj = sb.registerObjective("dummy", IScoreboardCriteria.b);
         obj.setDisplayName("§8•● §aBuildFFA");

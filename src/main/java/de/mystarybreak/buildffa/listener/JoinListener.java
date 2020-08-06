@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class JoinListener implements Listener {
 
@@ -27,13 +26,7 @@ public class JoinListener implements Listener {
         player.setGameMode(GameMode.SURVIVAL);
         plugin.getStatsManager().loadPlayer(player);
         player.getInventory().clear();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player a : Bukkit.getOnlinePlayers())
-                    plugin.getScoreboardManager().setBoard(a);
-            }
-        }.runTaskLater(plugin, 2);
+        plugin.getScoreboardManager().updateScoreboardForAll();
         if (plugin.getMapManager().getCurrentMap() != null)
             player.teleport(plugin.getMapManager().getCurrentMap().getSpawnPoint());
         if (!plugin.getMapManager().getMapPool().isEmpty()) {

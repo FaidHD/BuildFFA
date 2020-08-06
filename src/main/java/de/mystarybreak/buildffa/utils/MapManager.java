@@ -86,16 +86,7 @@ public class MapManager {
             seconds = 0;
             minutes = 5;
             Random r = new Random();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (Bukkit.getOnlinePlayers().size() > 0)
-                        for (Player a : Bukkit.getOnlinePlayers()) {
-                            plugin.getScoreboardManager().setBoard(a);
-                            a.teleport(currentMap.getSpawnPoint());
-                        }
-                }
-            }.runTaskLater(plugin, 2);
+            plugin.getScoreboardManager().updateScoreboardForAll();
             currentMap = mapPool.get(r.nextInt(mapPool.size() - 1));
             currentMap.startBlockReplace();
             taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -165,6 +156,7 @@ public class MapManager {
         currentMap.blockHardReset();
         currentMap = newMap;
         currentMap.startBlockReplace();
+        plugin.getScoreboardManager().updateScoreboardForAll();
 
         for (Player a : Bukkit.getOnlinePlayers())
             a.teleport(currentMap.getSpawnPoint());

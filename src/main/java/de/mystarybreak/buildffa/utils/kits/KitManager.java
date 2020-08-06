@@ -61,6 +61,7 @@ public class KitManager {
 
         currentKit = newKit;
 
+        plugin.getScoreboardManager().updateScoreboardForAll();
         for (Player a : Bukkit.getOnlinePlayers()) {
             a.getInventory().setContents(currentKit.getContents());
             a.getInventory().setArmorContents(currentKit.getArmorContents());
